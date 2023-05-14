@@ -1,6 +1,6 @@
-package RMISearchModule;
+package com.example.demo.RMISearchModule;
 
-import RMIClient.Hello_C_I;
+import com.example.demo.RMIClient.Hello_C_I;
 
 import java.rmi.server.*;
 import java.rmi.*;

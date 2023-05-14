@@ -1,7 +1,7 @@
-package StorageBarrel;
+package com.example.demo.StorageBarrel;
 
-import RMIClient.Hello_S_I;
-import RMIClient.Hello_C_I;
+import com.example.demo.RMIClient.Hello_S_I;
+import com.example.demo.RMIClient.Hello_C_I;
 
 import java.rmi.*;
 import java.rmi.server.*;
@@ -184,7 +184,7 @@ public class Storage_Barrels_RMI extends UnicastRemoteObject implements Hello_C_
 
                     try {
                         h = (Hello_S_I) LocateRegistry.getRegistry(7001).lookup("XPT");
-                        h.subscribe("StorageBarrel", (Hello_C_I) c);
+                        h.subscribe("com/example/demo/StorageBarrel", (Hello_C_I) c);
                     } catch (ConnectException | NotBoundException ignored) {
 
                     }
@@ -215,7 +215,7 @@ public class Storage_Barrels_RMI extends UnicastRemoteObject implements Hello_C_
             while (true) {
                 try {
                     h = (Hello_S_I) LocateRegistry.getRegistry(7001).lookup("XPT");
-                    h.subscribe("StorageBarrel" + ProcessHandle.current().pid(), (Hello_C_I) c);
+                    h.subscribe("com/example/demo/StorageBarrel" + ProcessHandle.current().pid(), (Hello_C_I) c);
                     break;
                 } catch (ConnectException e) {
                     if (++retry == 6) {
@@ -232,7 +232,7 @@ public class Storage_Barrels_RMI extends UnicastRemoteObject implements Hello_C_
 
                     try {
                         h = (Hello_S_I) LocateRegistry.getRegistry(7001).lookup("XPT");
-                        h.subscribe("StorageBarrel", (Hello_C_I) c);
+                        h.subscribe("com/example/demo/StorageBarrel", (Hello_C_I) c);
                     } catch (ConnectException ignored) {
 
                     }

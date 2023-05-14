@@ -1,4 +1,4 @@
-package StorageBarrel;
+package com.example.demo.StorageBarrel;
 
 import java.io.*;
 import java.net.DatagramPacket;

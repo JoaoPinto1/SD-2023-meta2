@@ -1,4 +1,4 @@
-package URLQueue;
+package com.example.demo.URLQueue;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;

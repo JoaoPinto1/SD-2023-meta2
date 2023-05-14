@@ -1,4 +1,4 @@
-package RMISearchModule;
+package com.example.demo.RMISearchModule;
 
 import java.io.Serializable;
 import java.rmi.*;
@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.*;
 
-import Downloader.Downloader;
-import RMIClient.Hello_C_I;
-import RMIClient.Hello_S_I;
-import URLQueue.*;
+import com.example.demo.RMIClient.Hello_C_I;
+import com.example.demo.RMIClient.Hello_S_I;
+import com.example.demo.URLQueue.QueueInterface;
+import com.example.demo.URLQueue.URLObject;
 
 
 /**

@@ -1,6 +1,4 @@
-package RMIClient;
-
-import Downloader.Downloader;
+package com.example.demo.RMIClient;
 
 import java.rmi.*;
 
