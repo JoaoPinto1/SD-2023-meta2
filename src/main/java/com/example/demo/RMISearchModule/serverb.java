@@ -1,4 +1,4 @@
-package RMISearchModule;
+package com.example.demo.RMISearchModule;
 
 import java.rmi.*;
 import java.rmi.server.*;
@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.*;
 
-import Downloader.Downloader;
-import RMIClient.Hello_C_I;
-import RMIClient.Hello_S_I;
+import com.example.demo.RMIClient.Hello_C_I;
+import com.example.demo.RMIClient.Hello_S_I;
 
 /**
  * Classe do ServerB

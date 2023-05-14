@@ -1,4 +1,4 @@
-package RMISearchModule;
+package com.example.demo.RMISearchModule;
 
 import java.rmi.*;
 

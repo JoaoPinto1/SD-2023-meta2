@@ -1,4 +1,4 @@
-package RMIClient;
+package com.example.demo.RMIClient;
 
 import java.rmi.*;
 import java.rmi.server.*;

@@ -1,4 +1,4 @@
-package URLQueue;
+package com.example.demo.URLQueue;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

@@ -1,7 +1,6 @@
-package RMISearchModule;
+package com.example.demo.RMISearchModule;
 
-import Downloader.Downloader;
-import RMIClient.Hello_C_I;
+import com.example.demo.RMIClient.Hello_C_I;
 
 import java.rmi.RemoteException;
 import java.util.*;

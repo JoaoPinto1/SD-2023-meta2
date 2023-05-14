@@ -1,13 +1,12 @@
-package Downloader;
+package com.example.demo.Downloader;
 
-import URLQueue.URLObject;
+import com.example.demo.URLQueue.URLObject;
+import com.example.demo.URLQueue.QueueInterface;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-
-import URLQueue.QueueInterface;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -59,7 +58,7 @@ public class Downloader extends Thread implements Serializable {
 
             // create socket without binding it (only for sending)
             QueueInterface server = (QueueInterface) LocateRegistry.getRegistry(6000).lookup("Queue");
-            System.out.println("Downloader " + nDownloader + " Ready!");
+            System.out.println("com/example/demo/Downloader " + nDownloader + " Ready!");
             while (true) {
                 try {
                     URLObject url = server.removeFromQueue();

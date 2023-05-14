@@ -1,9 +1,7 @@
-package StorageBarrel;
+package com.example.demo.StorageBarrel;
 
 import java.io.IOException;
 import java.rmi.server.*;
-import java.rmi.*;
-import java.sql.SQLException;
 
 
 /**

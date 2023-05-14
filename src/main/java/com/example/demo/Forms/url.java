@@ -1,4 +1,4 @@
-package Forms;
+package com.example.demo.Forms;
 
 import java.io.Serializable;
 

@@ -1,8 +1,6 @@
-package URLQueue;
+package com.example.demo.URLQueue;
 
 
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.LinkedList;
 import java.util.Queue;
 

@@ -1,10 +1,10 @@
-package RMIClient;
+package com.example.demo.RMIClient;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import Forms.user;
+import com.example.demo.Forms.user;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
