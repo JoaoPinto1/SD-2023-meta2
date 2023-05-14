@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dynamic Form Input Example</title>
+</head>
+
+<form th:action="@{/termos_pesquisados}" th:object="${Termos}" method="post">
+<body>
+<h1>Dynamic Form Input Example</h1>
+<script>
+  var numInputs = prompt("Quantos termos deseja pesquisar?");
+  var formHTML = "";
+  for (var i = 0; i < numInputs; i++) {
+    formHTML += "<label for='input" + i + "'>Termo " + (i+1) + ":</label><br>";
+    formHTML += "<input type='text' th:field='*{termos[i]}' id='input" + i + "' name='input" + i + "'><br>";
+  }
+  formHTML += "<input type='submit' value='Submit'>";
+  document.write(formHTML);
+
+</script>
+</body>
+</form>
+</html>

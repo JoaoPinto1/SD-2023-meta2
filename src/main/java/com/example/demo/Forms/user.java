@@ -1,4 +1,4 @@
-package Forms;
+package com.example.demo.Forms;
 
 import java.io.Serializable;
 
@@ -11,6 +11,14 @@ public class user implements Serializable {
     public user(String username , String password) {
         this.username = username;
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "user{" +
+                "username='" + this.username + '\'' +
+                ", password='" + this.password + '\'' +
+                '}';
     }
 
     public String getUsername() {
