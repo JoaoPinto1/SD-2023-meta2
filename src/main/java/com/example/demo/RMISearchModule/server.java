@@ -102,7 +102,6 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
                     String a = "type | status; register | failed; msg | Username ou password errados.";
                     try {
                         c.print_on_client(a);
-                        System.out.println("dei");
                     } catch (java.rmi.RemoteException e) {
                         System.out.println("Erro a enviar ao cliente.");
                     }
@@ -112,27 +111,29 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
         } else if (received_string[2].equals("search;")) {
             try {
                 //usar waits
-                String[] palavras = received_string[5].split("[^a-zA-Z0-9]+") ;
-                String search = "https://hacker-news.firebaseio.com/v0/topstories.json";
-                RestTemplate restTemplate = new RestTemplate();
-                List<Integer> topStories = restTemplate.getForObject(search, List.class);
-                QueueInterface server = (QueueInterface) LocateRegistry.getRegistry(6000).lookup("Queue");
-                for(Integer top:topStories){
-                    search = "https://hacker-news.firebaseio.com/v0/item/"+top+".json";
-                    HackerNewsItemRecord item = restTemplate.getForObject(search,HackerNewsItemRecord.class);
-                    String[] words = item.title().split("[^a-zA-Z0-9]+");
-                    boolean nice = false;
-                    for(int j=0; j<palavras.length; j++){
-                        for(int i=0; i< words.length;i++){
-                            if(palavras[j].equals(words[i])){
-                                nice = true;
-                                break;
+                if(received_string[3].equals("true")) {
+                    String[] palavras = received_string[5].split("[^a-zA-Z0-9]+");
+                    String search = "https://hacker-news.firebaseio.com/v0/topstories.json";
+                    RestTemplate restTemplate = new RestTemplate();
+                    List<Integer> topStories = restTemplate.getForObject(search, List.class);
+                    QueueInterface server = (QueueInterface) LocateRegistry.getRegistry(6000).lookup("Queue");
+                    for (Integer top : topStories) {
+                        search = "https://hacker-news.firebaseio.com/v0/item/" + top + ".json";
+                        HackerNewsItemRecord item = restTemplate.getForObject(search, HackerNewsItemRecord.class);
+                        String[] words = item.title().split("[^a-zA-Z0-9]+");
+                        boolean nice = false;
+                        for (int j = 0; j < palavras.length; j++) {
+                            for (int i = 0; i < words.length; i++) {
+                                if (palavras[j].equals(words[i])) {
+                                    nice = true;
+                                    break;
+                                }
                             }
                         }
-                    }
-                    if(nice) {
-                        URLObject url = new URLObject(item.url());
-                        server.addToQueue(url);
+                        if (nice) {
+                            URLObject url = new URLObject(item.url());
+                            server.addToQueue(url);
+                        }
                     }
                 }
                 synchronized (results) {

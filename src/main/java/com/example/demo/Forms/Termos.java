@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Termos {
 
-    public List<String> termos;
-    public boolean checked;
+    private List<String> termos;
+    private boolean checked;
 
 
     public Termos(){
@@ -22,7 +22,9 @@ public class Termos {
     public void setTermos(String new_termos) {
         termos.add(new_termos);
     }
-
+    public boolean getChecked(){
+        return checked;
+    }
 
     public void setChecked(boolean check){
         checked = check;
