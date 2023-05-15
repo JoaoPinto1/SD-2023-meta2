@@ -1,6 +1,10 @@
 package com.example.demo;
 
 import com.example.demo.Forms.Termos;
+import com.example.demo.RMIClient.Hello_C_I;
+import com.example.demo.RMIClient.Hello_S_I;
+import com.example.demo.RMIClient.Interface;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
@@ -9,9 +13,25 @@ import com.example.demo.Forms.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.example.demo.Forms.Url;
 
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
 
 @Controller
-public class Webpage {
+public class Webpage implements Hello_C_I {
+    private Hello_S_I h;
+    private Webpage c;
+
+    public Webpage() {
+        try {
+            h = (Hello_S_I) LocateRegistry.getRegistry(7000).lookup("XPTO");
+            h.subscribe("cliente", (Hello_C_I) c);
+        } catch (Exception e) {
+            System.err.println("Error connecting to search module: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     @GetMapping("/")
     public String redirect() {
@@ -99,7 +119,25 @@ public class Webpage {
         return "resultados";
     }
 
+    @GetMapping("/informacoes_gerais")
+    public String subscribeToProgramStatus() {
+        return "websocket";
+    }
 
+    @GetMapping("index_stories")
+    public String index_stories() throws Exception {
+        String msg = "type | search2; user | jl";
+        h.print_on_server(msg, (Hello_C_I) c);
+        return "index_stories";
+    }
+
+    @Override
+    public void print_on_client(String s) throws Exception {
+
+    }
+
+    @Override
+    public void ping() throws RemoteException {
+
+    }
 }
-
-

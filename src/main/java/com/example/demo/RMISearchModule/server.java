@@ -16,6 +16,7 @@ import com.example.demo.RMIClient.Hello_S_I;
 import com.example.demo.URLQueue.QueueInterface;
 import com.example.demo.URLQueue.URLObject;
 
+import com.example.demo.WebSocket.ProgramStatus;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -268,6 +269,7 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
                     String a = "type | status; information | " + storage_barrels.size() + " ;" + downloaders.size() + " ;" + top_searchs.toString();
                     try {
                         c.print_on_client(a);
+                        ProgramStatus programStatus = new ProgramStatus(storage_barrels,downloaders,top_searchs);
                     } catch (java.rmi.RemoteException e) {
                         System.out.println("Erro a enviar ao cliente.");
                     }
@@ -328,6 +330,9 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
             h = new server(results, searchs, top_searchs, storage_barrels, downloaders);
             Registry r = LocateRegistry.createRegistry(7000);
             r.rebind("XPTO", h);
+            SearchRMI searchRMI = new Search();
+            Registry p = LocateRegistry.createRegistry(6999);
+            p.rebind("search",searchRMI);
             System.out.println("Hello Server ready.");
             pa = new pagina_adminstracao(searchs, storage_barrels, top_searchs, downloaders);
             t0 = new Thread(pa);
