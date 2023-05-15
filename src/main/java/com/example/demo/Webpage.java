@@ -1,17 +1,17 @@
 package com.example.demo;
 
+import com.example.demo.Forms.Termos;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import com.example.demo.Forms.User;
 import org.springframework.web.bind.annotation.PostMapping;
-import com.example.demo.Forms.url;
-import com.example.demo.Forms.termos;
+import com.example.demo.Forms.Url;
 
 
 @Controller
-public class webpage {
+public class Webpage {
 
     @GetMapping("/")
     public String redirect() {
@@ -66,7 +66,7 @@ public class webpage {
     @GetMapping("/pesquisa_termos")
     public String pesquisar_termos(Model model) {
 
-        model.addAttribute("Termos", new termos());
+        model.addAttribute("Termos", new Termos());
 
         return "pesquisa_termos";
 
@@ -74,21 +74,21 @@ public class webpage {
 
 
     @PostMapping("/termos_pesquisados")
-    public String termos_pesquisados(@ModelAttribute termos Termos) {
+    public String termos_pesquisados(@ModelAttribute Termos termos) {
 
-        System.out.println(Termos);
+        System.out.println(termos);
 
         return "home";
     }
 
     @GetMapping("/indexar_url")
     public String indexar_url(Model model) {
-        model.addAttribute("Url", new url());
+        model.addAttribute("Url", new Url());
         return "indexar";
     }
 
     @PostMapping("/indexado")
-    public String Verifica_Indexar(@ModelAttribute url Url) {
+    public String Verifica_Indexar(@ModelAttribute Url Url) {
 
         String[] results = {"1", "resultado", "3"};
         //mandar url para o server

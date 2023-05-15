@@ -1,27 +1,26 @@
 package com.example.demo.Forms;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class termos {
+public class Termos {
 
-    public List<String> Termos;
+    public List<String> termos;
     public boolean checked;
 
 
-    public termos(){
-        Termos = new ArrayList<>();
+    public Termos(){
+        termos = new ArrayList<>();
         checked = false;
     }
 
-    public termos(List<String> termos , Boolean check) {
-        Termos = termos;
+    public Termos(List<String> termos , Boolean check) {
+        termos = termos;
         checked = check;
     }
 
-    public void setTermos(String termos) {
-        Termos.add(termos);
+    public void setTermos(String new_termos) {
+        termos.add(new_termos);
     }
 
 
@@ -32,12 +31,12 @@ public class termos {
     @Override
     public String toString() {
         return "termos{" +
-                "Termos=" + Termos +
+                "Termos=" + termos +
                 ", checked=" + checked +
                 '}';
     }
 
     public List<String> getTermos() {
-        return Termos;
+        return termos;
     }
 }

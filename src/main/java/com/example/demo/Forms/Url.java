@@ -2,13 +2,13 @@ package com.example.demo.Forms;
 
 import java.io.Serializable;
 
-public class url implements Serializable {
+public class Url implements Serializable {
     private String url;
     private String[] results;
 
-    public url() {}
+    public Url() {}
 
-    public url(String url , String[] results) {
+    public Url(String url , String[] results) {
 
         this.url = url;
         this.results = results;

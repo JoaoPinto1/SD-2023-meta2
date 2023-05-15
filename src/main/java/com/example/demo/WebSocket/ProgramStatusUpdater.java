@@ -33,7 +33,7 @@ public class ProgramStatusUpdater{
     }
 
 
-    private ProgramStatus getProgramStatus(){
+    public ProgramStatus getProgramStatus(){
         ProgramStatus serverStatus = new ProgramStatus();
         serverStatus.setDownloaders(getActiveDownloaders());
         serverStatus.setBarrels(getActiveBarrels());
