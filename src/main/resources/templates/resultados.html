@@ -8,9 +8,9 @@
 <div>
     <p>URL: <span th:text="${url.url}"></span></p>
     <ul>
-        <li th:each="value, iterStat : ${#arrays.veryFirst(url.results, 10)}"
-            th:text="${value} + ' (Index: ' + ${iterStat.index} + ')'"
-            th:if="${iterStat.index < 10}"></li>
+        <li th:each="value, iterStat : ${#numbers.sequence(0, 9)}"
+            th:if="${value < url.results.size()}"
+            th:text="${url.results[value]}"></li>
     </ul>
 </div>
 </body>

@@ -187,7 +187,7 @@ public class webpage implements Hello_C_I {
         } else {
             String msg = "type | search1; pesquisa | " + url.getUrl();
             h.print_on_server(msg,(Hello_C_I) c);
-            return "redirect:/home";
+            return "resultados";
         }
     }
 
@@ -206,7 +206,7 @@ public class webpage implements Hello_C_I {
     }
 
     @PostMapping("/resultados")
-    public String Verifica_Indexar(@ModelAttribute Url url) {
+    public String resultados(@ModelAttribute Url url) {
 
         List<String> results = new ArrayList<>();
 
