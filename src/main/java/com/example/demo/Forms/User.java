@@ -2,13 +2,13 @@ package com.example.demo.Forms;
 
 import java.io.Serializable;
 
-public class user implements Serializable {
+public class User implements Serializable {
     private String username;
     private String password;
 
-    public user() {}
+    public User() {}
 
-    public user(String username , String password) {
+    public User(String username , String password) {
         this.username = username;
         this.password = password;
     }
@@ -29,4 +29,11 @@ public class user implements Serializable {
         return this.password;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

@@ -1,14 +1,11 @@
-<form th:action="@{/success_login}" th:object="${login}" method="post">
-  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+<form th:action="@{/success_login}" th:object="${user}" method="post">
   <div>
-    <label>Username
+    <label>Username   </label>
     <input type="text" th:field="*{username}" required>
-    </label>
   </div>
   <div>
-    <label>Password
+    <label>Password</label>
       <input type="password" th:field="*{password}" required>
-    </label>
 
   </div>
   <button type="submit">Login</button>

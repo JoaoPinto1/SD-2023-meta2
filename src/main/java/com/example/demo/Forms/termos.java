@@ -1,28 +1,43 @@
 package com.example.demo.Forms;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class termos {
 
-    public String[] Termos;
+    public List<String> Termos;
+    public boolean checked;
 
 
     public termos(){
+        Termos = new ArrayList<>();
+        checked = false;
+    }
 
+    public termos(List<String> termos , Boolean check) {
+        Termos = termos;
+        checked = check;
+    }
+
+    public void setTermos(String termos) {
+        Termos.add(termos);
+    }
+
+
+    public void setChecked(boolean check){
+        checked = check;
     }
 
     @Override
     public String toString() {
         return "termos{" +
-                "termos=" + Arrays.toString(Termos) +
+                "Termos=" + Termos +
+                ", checked=" + checked +
                 '}';
     }
 
-    public termos(String[] termos) {
-        this.Termos = termos;
-    }
-
-    public String[] getTermos() {
+    public List<String> getTermos() {
         return Termos;
     }
 }
