@@ -26,6 +26,7 @@ public class Webpage implements Hello_C_I {
     public Webpage() {
         try {
             h = (Hello_S_I) LocateRegistry.getRegistry(7000).lookup("XPTO");
+            c = this;
             h.subscribe("cliente", (Hello_C_I) c);
         } catch (Exception e) {
             System.err.println("Error connecting to search module: " + e.getMessage());
@@ -52,11 +53,11 @@ public class Webpage implements Hello_C_I {
     }
 
     @PostMapping("/success_login")
-    public String success_login(@ModelAttribute User user) {
+    public String success_login(@ModelAttribute User user) throws Exception {
 
         //mandar para o server o username e o login recevido
-
-        System.out.println(user);
+        String msg = "type | login; username | "+user.getUsername()+"; password | "+user.getPassword();
+        h.print_on_server(msg,(Hello_C_I) c);
         //esperar pela resposta para saber se foi um sucesso ou não.
 
         return "home";
@@ -133,7 +134,6 @@ public class Webpage implements Hello_C_I {
 
     @Override
     public void print_on_client(String s) throws Exception {
-
     }
 
     @Override
