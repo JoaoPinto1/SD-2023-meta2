@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-    <body>
-    <pre id="arrPrint"></pre>
-        <script>
-                let form = document.forms[0];
-                let results = form.elements["results"];
-                document.getElementById("arrPrint").innerHTML = form;
-        </script>
-    </body>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Results Page</title>
+</head>
+<body>
+<h1>Results:</h1>
+<div>
+    <p>URL: <span th:text="${url.url}"></span></p>
+    <ul>
+        <li th:each="value, iterStat : ${#arrays.veryFirst(url.results, 10)}"
+            th:text="${value} + ' (Index: ' + ${iterStat.index} + ')'"
+            th:if="${iterStat.index < 10}"></li>
+    </ul>
+</div>
+</body>
 </html>

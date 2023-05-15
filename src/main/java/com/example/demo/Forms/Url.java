@@ -1,14 +1,21 @@
 package com.example.demo.Forms;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Url implements Serializable {
     private String url;
-    private String[] results;
+    public List<String> results;
 
-    public Url() {}
+    public Url() {
 
-    public Url(String url , String[] results) {
+        url = "";
+        results = new ArrayList<>();
+
+    }
+
+    public Url(String url , List<String> results) {
 
         this.url = url;
         this.results = results;
@@ -19,15 +26,15 @@ public class Url implements Serializable {
         return this.url;
 
     }
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrl(String str) {
+        url = str;
     }
 
-    public void setResults(String[] results) {
+    public List<String> getResults() {
+        return results;
+    }
+
+    public void setResults(List<String> results) {
         this.results = results;
-    }
-
-    public String[] getResults(){
-        return this.results;
     }
 }

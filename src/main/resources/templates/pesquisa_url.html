@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<form th:action="@{/check_indexacao}" th:object="${url}" method="post">
+<form th:action="@{/check_pesquisa}" th:object="${url}" method="post">
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -10,14 +10,14 @@
     </head>
     <body>
 
-    <h1>Indexar url</h1>
+    <h1>Pesquisa por url</h1>
     <br>
     <div>
         <label>Url</label>
         <input type="text" th:field="*{url}" required>
     </div>
     <br>
-    <button type="submit">Indexar</button>
+    <button type="submit">pesquisar</button>
     </body>
     <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
