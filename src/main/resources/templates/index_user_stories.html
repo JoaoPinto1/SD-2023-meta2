@@ -1,0 +1,12 @@
+<form th:action="@{/check_stories}" th:object="${user}" method="post">
+
+  <h1>Indexar user stories</h1>
+  <br>
+  <div>
+    <label>User </label>
+    <input type="text" th:field="*{username}" required>
+  </div>
+  <br>
+  <button type="submit">Indexar stories</button>
+
+</form>

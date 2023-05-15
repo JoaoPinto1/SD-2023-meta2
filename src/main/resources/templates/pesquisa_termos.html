@@ -1,48 +1,49 @@
 <html>
 <head>
-  <!-- Add necessary CSS and JavaScript libraries -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  <title>Pesquisa por termos</title>
+    <!-- Add necessary CSS and JavaScript libraries -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <title>Pesquisa por termos</title>
 </head>
 <body>
 <h1>Pesquisa por termos</h1>
 <form th:action="@{/termos_pesquisados}" th:object="${termos}" method="post">
-  <script>
-    var numInputs = prompt("Quantos termos deseja pesquisar?");
-    var formHTML = "";
-    for (var i = 0; i < numInputs; i++) {
-      formHTML += "<label for='input" + i + "'>Termo " + (i+1) + ":</label><br>";
-      formHTML += "<input type='text' th:field='*{termos[" + i + "]}' required id='input" + i + "' name='termos[" + i + "]'><br>";
-    }
-    formHTML += "<div> Indexar Urls <input type='checkbox' id='indexUrlsCheckbox' name='checked' value='true'> </div>";
-    formHTML += "<input type='submit' value='Submit'>";
-    document.write(formHTML);
-  </script>
+    <script>
+        var numInputs = prompt("Quantos termos deseja pesquisar?");
+        var formHTML = "";
+        for (var i = 0; i < numInputs; i++) {
+            formHTML += "<label for='input" + i + "'>Termo " + (i + 1) + ":</label><br>";
+            formHTML += "<input type='text' th:field='*{termos[" + i + "]}' required id='input" + i + "' name='termos[" + i + "]'><br>";
+        }
+        formHTML += "<div> Indexar Urls <input type='checkbox' id='indexUrlsCheckbox' name='checked' value='true'> </div>";
+        formHTML += "<input type='submit' value='Submit'>";
+        document.write(formHTML);
+    </script>
 
-  <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="errorModalLabel">Error</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Error message will be inserted here -->
+                    <p th:text="${errorMessage}"></p>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-          <!-- Error message will be inserted here -->
-          <p th:text="${errorMessage}"></p>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <script th:if="${errorMessage}">
-    $(document).ready(function() {
-      $('#errorModal').modal('show');
-    });
-  </script>
+    <script th:if="${errorMessage}">
+        $(document).ready(function () {
+            $('#errorModal').modal('show');
+        });
+    </script>
 
 </form>
 </body>

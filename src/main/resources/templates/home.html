@@ -1,43 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  <title>Options</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <title>Options</title>
 </head>
 <body>
 <h1>O que deseja realizar?</h1>
 <ul>
-  <li><a href="login">Login</a></li>
-  <li><a href="register">Registar</a></li>
-  <li><a href="logout">Logout</a></li>
-  <li><a href="indexar_url">Indexar novo URL</a></li>
-  <li><a href="pesquisa_termos">Realizar pesquisa de termos</a></li>
-  <li><a href="pesquisa_url">Realizar pesquisa de urls</a></li>
-  <li><a href="informacoes_gerais">Consultar informacoes gerais do sistema</a></li>
+    <li><a href="login">Login</a></li>
+    <li><a href="register">Registar</a></li>
+    <li><a href="logout">Logout</a></li>
+    <li><a href="indexar_url">Indexar novo URL</a></li>
+    <li><a href="indexar_stories">Indexar stories do usuario</a></li>
+    <li><a href="pesquisa_termos">Realizar pesquisa de termos</a></li>
+    <li><a href="pesquisa_url">Realizar pesquisa de urls</a></li>
+    <li><a href="informacoes_gerais">Consultar informacoes gerais do sistema</a></li>
 </ul>
-<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="errorModalLabel">Aviso:</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Error message will be inserted here -->
-        <p th:text="${errorMessage}"></p>
-      </div>
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Aviso:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Error message will be inserted here -->
+                <p th:text="${errorMessage}"></p>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <script th:if="${errorMessage}">
-  $(document).ready(function() {
-    $('#errorModal').modal('show');
-  });
+    $(document).ready(function () {
+        $('#errorModal').modal('show');
+    });
 </script>
 </body>
 </html>

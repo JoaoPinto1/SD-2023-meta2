@@ -6,7 +6,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     </head>
     <div>
-        <label>Username   </label>
+        <label>Username </label>
         <input type="text" th:field="*{username}" required>
     </div>
     <div>
@@ -16,7 +16,8 @@
     </div>
     <button type="submit">Login</button>
 
-    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -34,7 +35,7 @@
     </div>
 
     <script th:if="${errorMessage}">
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#errorModal').modal('show');
         });
     </script>

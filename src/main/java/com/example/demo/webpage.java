@@ -135,6 +135,22 @@ public class webpage implements Hello_C_I {
     }
 
 
+    @GetMapping("/indexar_stories")
+    public String indexar_stories(Model model){
+
+        model.addAttribute("user" , new User());
+
+        return "index_user_stories";
+    }
+
+    @PostMapping("/check_stories")
+    public String check_stories(@ModelAttribute User user){
+
+        return "redirect:/home";
+
+    }
+
+
     @GetMapping("/pesquisa_termos")
     public String pesquisar_termos(Model model) {
 
