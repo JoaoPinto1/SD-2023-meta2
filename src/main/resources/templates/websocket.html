@@ -11,10 +11,15 @@
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function (frame) {
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/messages', function (message) {
-                    var content = JSON.parse(message.body).content;
-                    // Handle messages received from the server
-                    console.log('Received message: ' + content);
+                stompClient.subscribe('/topic/serverStatus', function (message) {
+                    var serverStatus = JSON.parse(message.body);
+                    // Update HTML elements with server status information
+                    $('#downloaders').text(serverStatus.downloaders);
+                    $('#barrels').text(serverStatus.barrels);
+                    $('#topSearches').empty();
+                    serverStatus.topSearches.forEach(function (search) {
+                        $('#topSearches').append('<li>' + search + '</li>');
+                    });
                 });
             });
         }
@@ -22,15 +27,8 @@
         function disconnect() {
             if (stompClient !== null) {
                 stompClient.disconnect();
+                console.log("Disconnected");
             }
-            console.log("Disconnected");
-        }
-
-        function sendMessage() {
-            var message = {
-                content: 'Hello, server!'
-            };
-            stompClient.send("/app/sendMessage", {}, JSON.stringify(message));
         }
 
         $(function () {
@@ -39,7 +37,19 @@
     </script>
 </head>
 <body>
-<!-- Content of your administration page -->
-<button onclick="sendMessage()">Send Message</button>
+<h1>Program Information</h1>
+<div>
+    <h2>Downloaders</h2>
+    <p id="downloaders"></p>
+</div>
+<div>
+    <h2>Barrels</h2>
+    <p id="barrels"></p>
+</div>
+<div>
+    <h2>Top Searches</h2>
+    <ul id="topSearches"></ul>
+</div>
+<button onclick="disconnect()">Disconnect</button>
 </body>
 </html>
