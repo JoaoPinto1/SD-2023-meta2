@@ -10,7 +10,7 @@ public interface Hello_S_I extends Remote {
      * @param client Cliente a enviar
      * @throws java.rmi.RemoteException Erro RMI
      */
-    public void print_on_server(String s, Hello_C_I client) throws java.rmi.RemoteException;
+    public void print_on_server(String s, Hello_C_I client) throws Exception;
 
     /**
      * Cliente subscreve ao server, e adicionado a lista de clientes

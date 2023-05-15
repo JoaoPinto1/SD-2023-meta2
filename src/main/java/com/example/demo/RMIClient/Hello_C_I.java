@@ -10,7 +10,7 @@ public interface Hello_C_I extends Remote, Serializable {
      * @param s String a enviar
      * @throws java.rmi.RemoteException Erro RMI
      */
-    void print_on_client(String s) throws java.rmi.RemoteException;
+    void print_on_client(String s) throws Exception;
 
     /**
      * E realizado um "ping", devolve excecao caso o cliente esteja em baixo e nao devolve nada se tiver ativo

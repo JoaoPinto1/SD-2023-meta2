@@ -235,6 +235,8 @@ public class serverb extends UnicastRemoteObject implements Hello_S_I, Hello_C_I
                                 synchronized (searchs) {
                                     searchs.wait();
                                 }
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
                             }
 
                             connect = 1;

@@ -242,18 +242,17 @@ public class Interface extends UnicastRemoteObject implements Hello_C_I {
 
                 if (num != -1) {
                     switch (num) {
-                        case (1):
-
+                        case (0) -> {
+                            String msg = "type | search2; user | jl";
+                            h.print_on_server(msg, (Hello_C_I) c);
+                        }
+                        case (1) -> {
                             System.out.println("\nUsername:");
                             String username = read_text();
-
                             if (username == null)
                                 break;
-
-
                             if (!verify_value(username)) {
                                 System.out.println("Nao pode conter os carateres '|' , ';' , ' ' e '\\n'\n");
-                                break;
                             } else {
                                 System.out.println("\nPassword:");
                                 String password = read_text();
@@ -263,7 +262,6 @@ public class Interface extends UnicastRemoteObject implements Hello_C_I {
 
                                 if (!verify_value(password)) {
                                     System.out.println("Nao pode conter os carateres '|' , ';' , ' ' e '\\n'\n");
-                                    break;
                                 } else {
                                     String msg = "type | login; username | " + username + "; password | " + password;
 
@@ -271,7 +269,7 @@ public class Interface extends UnicastRemoteObject implements Hello_C_I {
                                         try {
                                             h.print_on_server(msg, (Hello_C_I) c);
                                             break;
-                                        } catch (java.rmi.ConnectException | java.rmi.UnmarshalException e) {
+                                        } catch (ConnectException | UnmarshalException e) {
 
                                             if (++retry == 6) {
                                                 System.out.println("Nao foi possivel realizar a conexao com o servidor.");
@@ -284,25 +282,21 @@ public class Interface extends UnicastRemoteObject implements Hello_C_I {
                                             try {
                                                 h = (Hello_S_I) LocateRegistry.getRegistry(7000).lookup("XPTO");
                                                 h.subscribe("cliente", (Hello_C_I) c);
-                                            } catch (java.rmi.ConnectException ignored) {
+                                            } catch (ConnectException ignored) {
 
                                             }
                                         }
                                     }
                                 }
                             }
-                            break;
-                        case (2):
+                        }
+                        case (2) -> {
                             System.out.println("\nInsira o username desejado:");
-
                             String username_regist = read_text();
-
                             if (username_regist == null)
                                 break;
-
                             if (!verify_value(username_regist)) {
                                 System.out.println("Nao pode conter os carateres '|' , ';', ' ' e '\\n'\n");
-                                break;
                             } else {
                                 System.out.println("\nInsira a password desejada:");
                                 String password_regist = read_text();
@@ -312,7 +306,6 @@ public class Interface extends UnicastRemoteObject implements Hello_C_I {
 
                                 if (!verify_value(password_regist)) {
                                     System.out.println("Nao pode conter os carateres '|' , ';' , ' ' e '\\n'\n");
-                                    break;
                                 } else {
                                     String msg = "type | regist; username | " + username_regist + "; password | " + password_regist;
 
@@ -320,7 +313,7 @@ public class Interface extends UnicastRemoteObject implements Hello_C_I {
                                         try {
                                             h.print_on_server(msg, (Hello_C_I) c);
                                             break;
-                                        } catch (java.rmi.ConnectException | java.rmi.UnmarshalException e) {
+                                        } catch (ConnectException | UnmarshalException e) {
 
                                             if (++retry == 6) {
                                                 System.out.println("Nao foi possivel realizar a conexao com o servidor.");
@@ -333,17 +326,15 @@ public class Interface extends UnicastRemoteObject implements Hello_C_I {
                                             try {
                                                 h = (Hello_S_I) LocateRegistry.getRegistry(7000).lookup("XPTO");
                                                 h.subscribe("cliente", (Hello_C_I) c);
-                                            } catch (java.rmi.ConnectException ignored) {
+                                            } catch (ConnectException ignored) {
 
                                             }
                                         }
                                     }
                                 }
                             }
-
-                            break;
-
-                        case (3):
+                        }
+                        case (3) -> {
                             if (logged_in) {
                                 String msg = "type | logout;";
 
@@ -351,7 +342,7 @@ public class Interface extends UnicastRemoteObject implements Hello_C_I {
                                     try {
                                         h.print_on_server(msg, (Hello_C_I) c);
                                         break;
-                                    } catch (java.rmi.ConnectException | java.rmi.UnmarshalException e) {
+                                    } catch (ConnectException | UnmarshalException e) {
 
                                         if (++retry == 6) {
                                             System.out.println("Nao foi possivel realizar a conexao com o servidor.");
@@ -364,36 +355,31 @@ public class Interface extends UnicastRemoteObject implements Hello_C_I {
                                         try {
                                             h = (Hello_S_I) LocateRegistry.getRegistry(7000).lookup("XPTO");
                                             h.subscribe("cliente", (Hello_C_I) c);
-                                        } catch (java.rmi.ConnectException ignored) {
+                                        } catch (ConnectException ignored) {
 
                                         }
                                     }
                                 }
                             } else
                                 System.out.println("Para realizar logout necessita primeiro realizar login.\n");
-                            break;
-                        case (4):
+                        }
+                        case (4) -> {
                             System.out.println("Qual o URL que deseja anexar?");
-
                             String URL = read_text();
-
                             if (URL == null) {
                                 System.out.println("\nURL invalido!\n");
                                 break;
                             }
-
                             if (!verify_value(URL)) {
                                 System.out.println("Nao pode conter os carateres '|' , ';' , ' ' e '\\n'\n");
                                 break;
                             }
-
                             String msg = "type | url; url | " + URL;
-
                             while (true) {
                                 try {
                                     h.print_on_server(msg, (Hello_C_I) c);
                                     break;
-                                } catch (java.rmi.ConnectException | java.rmi.UnmarshalException e) {
+                                } catch (ConnectException | UnmarshalException e) {
 
                                     if (++retry == 6) {
                                         System.out.println("Nao foi possivel realizar a conexao com o servidor.");
@@ -406,24 +392,21 @@ public class Interface extends UnicastRemoteObject implements Hello_C_I {
                                     try {
                                         h = (Hello_S_I) LocateRegistry.getRegistry(7000).lookup("XPTO");
                                         h.subscribe("cliente", (Hello_C_I) c);
-                                    } catch (java.rmi.ConnectException ignored) {
+                                    } catch (ConnectException ignored) {
 
                                     }
                                 }
                             }
-                            break;
-                        case (5):
-
+                        }
+                        case (5) -> {
                             int detect_break = 0;
                             System.out.println("Quantos termos deseja pesquisar?");
                             int termos = read_int();
-
                             if (termos < 1) {
                                 System.out.println("Erro nos termos!");
                                 break;
                             }
                             String[] pesquisa = new String[termos];
-
                             for (int i = 0; i < termos; i++) {
                                 System.out.println("Insira o termo " + (i + 1) + ":");
                                 pesquisa[i] = read_text();
@@ -446,16 +429,14 @@ public class Interface extends UnicastRemoteObject implements Hello_C_I {
                                     break;
                                 }
                             }
-
                             if (detect_break == 1)
                                 break;
-
                             String str = String.join(",", pesquisa);
                             while (true) {
                                 try {
                                     h.print_on_server("type | search; pesquisa | " + str, (Hello_C_I) c);
                                     break;
-                                } catch (java.rmi.ConnectException | java.rmi.UnmarshalException e) {
+                                } catch (ConnectException | UnmarshalException e) {
 
                                     if (++retry == 6) {
                                         System.out.println("Nao foi possivel realizar a conexao com o servidor.");
@@ -468,14 +449,13 @@ public class Interface extends UnicastRemoteObject implements Hello_C_I {
                                     try {
                                         h = (Hello_S_I) LocateRegistry.getRegistry(7000).lookup("XPTO");
                                         h.subscribe("cliente", (Hello_C_I) c);
-                                    } catch (java.rmi.ConnectException ignored) {
+                                    } catch (ConnectException ignored) {
 
                                     }
                                 }
                             }
-
-                            break;
-                        case (6):
+                        }
+                        case (6) -> {
                             if (logged_in) {
                                 System.out.println("Que URL deseja pesquisar?");
                                 String url = read_text();
@@ -495,7 +475,7 @@ public class Interface extends UnicastRemoteObject implements Hello_C_I {
                                     try {
                                         h.print_on_server("type | search1; pesquisa | " + url, (Hello_C_I) c);
                                         break;
-                                    } catch (java.rmi.ConnectException | java.rmi.UnmarshalException e) {
+                                    } catch (ConnectException | UnmarshalException e) {
 
                                         if (++retry == 6) {
                                             System.out.println("Nao foi possivel realizar a conexao com o servidor.");
@@ -508,7 +488,7 @@ public class Interface extends UnicastRemoteObject implements Hello_C_I {
                                         try {
                                             h = (Hello_S_I) LocateRegistry.getRegistry(7000).lookup("XPTO");
                                             h.subscribe("cliente", (Hello_C_I) c);
-                                        } catch (java.rmi.ConnectException ignored) {
+                                        } catch (ConnectException ignored) {
 
                                         }
                                     }
@@ -516,14 +496,13 @@ public class Interface extends UnicastRemoteObject implements Hello_C_I {
                             } else {
                                 System.out.println("\nE necessario ter login efetuado para realizar esta operacao!\n");
                             }
-                            break;
-                        case (7):
-
+                        }
+                        case (7) -> {
                             while (true) {
                                 try {
                                     h.print_on_server("type | information;", (Hello_C_I) c);
                                     break;
-                                } catch (java.rmi.ConnectException | java.rmi.UnmarshalException e) {
+                                } catch (ConnectException | UnmarshalException e) {
 
                                     if (++retry == 6) {
                                         System.out.println("Nao foi possivel realizar a conexao com o servidor.");
@@ -536,18 +515,17 @@ public class Interface extends UnicastRemoteObject implements Hello_C_I {
                                     try {
                                         h = (Hello_S_I) LocateRegistry.getRegistry(7000).lookup("XPTO");
                                         h.subscribe("cliente", (Hello_C_I) c);
-                                    } catch (java.rmi.ConnectException ignored) {
+                                    } catch (ConnectException ignored) {
 
                                     }
                                 }
                             }
-                            break;
-                        case (8):
+                        }
+                        case (8) -> {
                             h.unsubscribe("cliente", (Hello_C_I) c);
                             finish = true;
-                            break;
-                        default:
-                            System.out.println("Escolha invalida!");
+                        }
+                        default -> System.out.println("Escolha invalida!");
                     }
 
 

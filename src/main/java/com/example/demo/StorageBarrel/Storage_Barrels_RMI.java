@@ -26,7 +26,7 @@ public class Storage_Barrels_RMI extends UnicastRemoteObject implements Hello_C_
      * @param s string recevida
      * @throws RemoteException quando e chamado e nao responde
      */
-    public void print_on_client(String s) throws RemoteException {
+    public void print_on_client(String s) throws Exception {
 
         //tipo de search
         String[] pesquisa = s.split(",");

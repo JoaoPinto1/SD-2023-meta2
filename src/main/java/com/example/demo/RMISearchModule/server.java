@@ -9,10 +9,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.*;
 
+import com.example.demo.HackerNewsItemRecord;
+import com.example.demo.HackerNewsUser;
 import com.example.demo.RMIClient.Hello_C_I;
 import com.example.demo.RMIClient.Hello_S_I;
 import com.example.demo.URLQueue.QueueInterface;
 import com.example.demo.URLQueue.URLObject;
+
+import org.springframework.web.client.RestTemplate;
 
 
 /**
@@ -59,7 +63,7 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
      * @param c cliente que pediu para realizar a funcao
      * @throws RemoteException quando e chamado e nao responde
      */
-    public void print_on_server(String s, Hello_C_I c) throws RemoteException {
+    public void print_on_server(String s, Hello_C_I c) throws Exception {
 
         String[] received_string = s.split(" ", 0);
         System.out.println(Arrays.toString(received_string));
@@ -108,6 +112,32 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
         } else if (received_string[2].equals("search;")) {
             try {
                 //usar waits
+                String[] palavras = received_string[5].split("[^a-zA-Z0-9]+") ;
+                String search = "https://hacker-news.firebaseio.com/v0/topstories.json";
+                RestTemplate restTemplate = new RestTemplate();
+                List<Integer> topStories = restTemplate.getForObject(search, List.class);
+                QueueInterface server = (QueueInterface) LocateRegistry.getRegistry(6000).lookup("Queue");
+                for(Integer top:topStories){
+                    search = "https://hacker-news.firebaseio.com/v0/item/"+top+".json";
+                    HackerNewsItemRecord item = restTemplate.getForObject(search,HackerNewsItemRecord.class);
+                    String[] words = item.title().split("[^a-zA-Z0-9]+");
+                    boolean nice = false;
+                    for(int j=0; j<palavras.length; j++){
+                        System.out.println(palavras[j]);
+                        for(int i=0; i< words.length;i++){
+                            System.out.println(words[i]);
+                            if(palavras[j].equals(words[i])){
+                                System.out.println("nice");
+                                nice = true;
+                                break;
+                            }
+                        }
+                    }
+                    if(nice) {
+                        URLObject url = new URLObject(item.url());
+                        server.addToQueue(url);
+                    }
+                }
                 synchronized (results) {
 
                     while (results.isEmpty()) {
@@ -169,7 +199,24 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
                 System.out.println("Error");
 
             }
-        } else if (received_string[2].equals("regist;")) {
+        } else if(received_string[2].equals("search2;")){ //stories utilizador
+            String utilizador = received_string[5];
+            String search = "https://hacker-news.firebaseio.com/v0/user/"+utilizador+".json";
+            RestTemplate restTemplate = new RestTemplate();
+            HackerNewsUser user = restTemplate.getForObject(search, HackerNewsUser.class);
+            List<Integer> articles = user.submitted();
+            QueueInterface server = (QueueInterface) LocateRegistry.getRegistry(6000).lookup("Queue");
+            for(Integer id:articles){
+                search = "https://hacker-news.firebaseio.com/v0/item/"+id+".json";
+                HackerNewsItemRecord item = restTemplate.getForObject(search,HackerNewsItemRecord.class);
+                assert item != null;
+                URLObject url = new URLObject(item.url());
+                server.addToQueue(url);
+            }
+        }
+
+
+        else if (received_string[2].equals("regist;")) {
 
             if (registed_users.containsKey(received_string[5].replace(";", ""))) {
                 String a = "type | status; register | failed; msg | O username ja se encontra utilizado.";
