@@ -23,8 +23,6 @@ public class webpage {
         return "home";
     }
 
-
-
     @GetMapping("/login")
     public String login(Model model){
 

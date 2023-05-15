@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.*;
 
-import com.example.demo.HackerNewsItemRecord;
-import com.example.demo.HackerNewsUser;
+import com.example.demo.HackerNews.HackerNewsItemRecord;
+import com.example.demo.HackerNews.HackerNewsUser;
 import com.example.demo.RMIClient.Hello_C_I;
 import com.example.demo.RMIClient.Hello_S_I;
 import com.example.demo.URLQueue.QueueInterface;
@@ -123,11 +123,8 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
                     String[] words = item.title().split("[^a-zA-Z0-9]+");
                     boolean nice = false;
                     for(int j=0; j<palavras.length; j++){
-                        System.out.println(palavras[j]);
                         for(int i=0; i< words.length;i++){
-                            System.out.println(words[i]);
                             if(palavras[j].equals(words[i])){
-                                System.out.println("nice");
                                 nice = true;
                                 break;
                             }

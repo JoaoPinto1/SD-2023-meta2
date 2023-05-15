@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script>
+        var stompClient = null;
+
+        function connect() {
+            var socket = new SockJS('/websocket');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/messages', function (message) {
+                    var content = JSON.parse(message.body).content;
+                    // Handle messages received from the server
+                    console.log('Received message: ' + content);
+                });
+            });
+        }
+
+        function disconnect() {
+            if (stompClient !== null) {
+                stompClient.disconnect();
+            }
+            console.log("Disconnected");
+        }
+
+        function sendMessage() {
+            var message = {
+                content: 'Hello, server!'
+            };
+            stompClient.send("/app/sendMessage", {}, JSON.stringify(message));
+        }
+
+        $(function () {
+            connect();
+        });
+    </script>
+</head>
+<body>
+<!-- Content of your administration page -->
+<button onclick="sendMessage()">Send Message</button>
+</body>
+</html>
