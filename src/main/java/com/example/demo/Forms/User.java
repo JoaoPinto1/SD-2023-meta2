@@ -13,6 +13,10 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public User(String username){
+        this.username = username;
+    }
+
     @Override
     public String toString() {
         return "user{" +

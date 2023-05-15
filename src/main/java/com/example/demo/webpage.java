@@ -47,7 +47,7 @@ public class webpage implements Hello_C_I {
      public Webpage(ProgramInfoSender programInfoSender) {
          this.programInfoSender = programInfoSender;
      }
- */
+    */
 
 
     private static Boolean verify_value(String username) {
@@ -144,10 +144,11 @@ public class webpage implements Hello_C_I {
     }
 
     @PostMapping("/check_stories")
-    public String check_stories(@ModelAttribute User user){
+    public String check_stories(@ModelAttribute User user) throws Exception {
 
+        String msg = "type | search2; username | " +user.getUsername();
+        h.print_on_server(msg,(Hello_C_I) c);
         return "redirect:/home";
-
     }
 
 
