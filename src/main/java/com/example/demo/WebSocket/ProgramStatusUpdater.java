@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.HtmlUtils;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Component
@@ -20,7 +21,7 @@ public class ProgramStatusUpdater{
         this.messagingTemplate = messagingTemplate;
     }
 
-    @Scheduled
+    @Scheduled(fixedRate = 5000)
     public void sendMessage() {
 
 
@@ -53,7 +54,7 @@ public class ProgramStatusUpdater{
         return null;// Retrieve the list of active barrels
     }
 
-    private List<String> getTopSearches() {
+    private HashMap<String,String> getTopSearches() {
         // Logic to fetch top searches
         return null;// Retrieve the list of top searches
     }
