@@ -330,9 +330,6 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
             h = new server(results, searchs, top_searchs, storage_barrels, downloaders);
             Registry r = LocateRegistry.createRegistry(7000);
             r.rebind("XPTO", h);
-            SearchRMI searchRMI = new Search();
-            Registry p = LocateRegistry.createRegistry(6999);
-            p.rebind("search",searchRMI);
             System.out.println("Hello Server ready.");
             pa = new pagina_adminstracao(searchs, storage_barrels, top_searchs, downloaders);
             t0 = new Thread(pa);
