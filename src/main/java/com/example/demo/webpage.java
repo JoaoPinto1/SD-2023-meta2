@@ -23,6 +23,11 @@ public class webpage {
         return "home";
     }
 
+    @GetMapping("/informacoes_gerais")
+    public String informacoes(){
+        return "/websocket";
+    }
+
     @GetMapping("/login")
     public String login(Model model){
 
