@@ -105,7 +105,6 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
                         System.out.println("dei");
                     } catch (java.rmi.RemoteException e) {
                         System.out.println("Erro a enviar ao cliente.");
-
                     }
                 }
             }
