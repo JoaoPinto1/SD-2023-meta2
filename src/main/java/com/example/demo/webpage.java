@@ -202,6 +202,11 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
     public String pesquisa_url(Model model) {
         model.addAttribute("url", new Url());
 
+        if(!logged_on){
+            model.addAttribute("errorMessage", "Necessita ter login realizado para poder realizar esta acao!");
+            return "home";
+        }
+
         return "pesquisa_url";
     }
 
