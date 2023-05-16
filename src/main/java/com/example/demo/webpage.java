@@ -214,7 +214,9 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
     }
 
     @GetMapping("/informacoes_gerais")
-    public String informacoes(){
+    public String informacoes() throws Exception {
+        String msg = "type | information;";
+        h.print_on_server(msg,(Hello_C_I) c);
         return "websocket1";
     }
 

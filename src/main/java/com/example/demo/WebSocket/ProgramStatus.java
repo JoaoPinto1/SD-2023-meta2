@@ -45,4 +45,5 @@ public class ProgramStatus {
     public void setTopSearches(Map<String,String> topSearchs) {
         this.topSearchs = topSearchs;
     }
+
 }

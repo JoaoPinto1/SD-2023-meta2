@@ -16,13 +16,26 @@ import com.example.demo.RMIClient.Hello_S_I;
 import com.example.demo.URLQueue.QueueInterface;
 import com.example.demo.URLQueue.URLObject;
 
+import com.example.demo.WebSocket.Message;
 import com.example.demo.WebSocket.ProgramStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandler;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 
 /**
  * Classe do Server
  */
+@Component
 public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, Serializable {
 
     private Thread t0;
@@ -36,6 +49,7 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
     public ArrayList<Hello_C_I> storage_barrels;
 
     public ArrayList<Hello_C_I> downloaders;
+
 
 
     /**
@@ -256,30 +270,37 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
                 System.out.println("Error");
             }
         } else if (received_string[2].equals("information;")) {
-
-            synchronized (storage_barrels) {
-
-                storage_barrels.notifyAll();
-
-                try {
-                    storage_barrels.wait();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                synchronized (top_searchs) {
-                    String a = "type | status; information | " + storage_barrels.size() + " ;" + downloaders.size() + " ;" + top_searchs.toString();
-                    try {
-                        c.print_on_client(a);
-                        ProgramStatus programStatus = new ProgramStatus(storage_barrels,downloaders,top_searchs);
-                    } catch (java.rmi.RemoteException e) {
-                        System.out.println("Erro a enviar ao cliente.");
-                    }
-                }
-            }
-
+            //send_information();
         }
 
     }
+
+    @Scheduled(fixedRate = 5000)
+    private void send_information(){
+        System.out.println("enviei");
+        synchronized (storage_barrels) {
+            synchronized (top_searchs) {
+                String a = "type | status; information | " + storage_barrels.size() + " ;" + downloaders.size() + " ;" + top_searchs.toString();
+                Message msg = new Message(a);
+                //c.print_on_client(a);
+                sendMessage("/app/message",a);
+            }
+        }
+    }
+    public void sendMessage(String destination, String content) {
+        WebSocketStompClient stompClient = new WebSocketStompClient(new StandardWebSocketClient());
+        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+
+        StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
+            @Override
+            public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+                session.send(destination, content);
+            }
+        };
+
+        stompClient.connect("ws://localhost:8080/my-websocket", sessionHandler);
+    }
+
 
     /**
      * Adiciona o cliente que chamou a funcao na lista de clientes.
@@ -327,7 +348,6 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
         String a;
 
         try (Scanner sc = new Scanner(System.in)) {
-
             h = new server(results, searchs, top_searchs, storage_barrels, downloaders);
             Registry r = LocateRegistry.createRegistry(7000);
             r.rebind("XPTO", h);

@@ -12,19 +12,17 @@ function setConnected(connected) {
     $("#messages").html("");
 }
 
-
 function connect() {
-    var socket = new SockJS("/my-websocket");
+    var socket = new SockJS('/my-websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
-        console.log("Connected: " + frame);
-        stompClient.subscribe("/topic/messages", function (message) {
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/messages', function (message) {
             showMessage(JSON.parse(message.body).content);
         });
     });
 }
-
 
 function disconnect() {
     if (stompClient !== null) {
@@ -34,10 +32,10 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function sendMessage() {
-    stompClient.send("/app/message", {}, JSON.stringify({"content": $("#message").val()}));
-}
 
+function sendMessage() {
+    stompClient.send("/app/message", {}, JSON.stringify({'content': $("#message").val()}));
+}
 
 function showMessage(message) {
     $("#messages").append("<tr><td>" + message + "</td></tr>");
@@ -51,3 +49,4 @@ $(function () {
     $( "#disconnect" ).click(function() { disconnect(); });
     $( "#send" ).click(function() { sendMessage(); });
 });
+

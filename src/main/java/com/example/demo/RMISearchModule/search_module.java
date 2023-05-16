@@ -1,6 +1,7 @@
 package com.example.demo.RMISearchModule;
 
 import com.example.demo.RMIClient.Hello_C_I;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.rmi.server.*;
 import java.rmi.*;
