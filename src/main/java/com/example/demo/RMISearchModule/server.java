@@ -35,7 +35,6 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 /**
  * Classe do Server
  */
-@Component
 public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, Serializable {
 
     private Thread t0;
@@ -270,23 +269,30 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
                 System.out.println("Error");
             }
         } else if (received_string[2].equals("information;")) {
-            //send_information();
-        }
 
-    }
-
-    @Scheduled(fixedRate = 5000)
-    private void send_information(){
-        System.out.println("enviei");
         synchronized (storage_barrels) {
+
+            storage_barrels.notifyAll();
+
+            try {
+                storage_barrels.wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             synchronized (top_searchs) {
-                String a = "type | status; information | " + storage_barrels.size() + " ;" + downloaders.size() + " ;" + top_searchs.toString();
-                Message msg = new Message(a);
-                //c.print_on_client(a);
-                sendMessage("/app/message",a);
+                String a = "type | status; information | " + storage_barrels.size() + "," + downloaders.size() + "," + top_searchs.toString();
+                try {
+                    c.print_on_client(a);
+                } catch (java.rmi.RemoteException e) {
+                    System.out.println("Erro a enviar ao cliente.");
+                }
             }
         }
+
     }
+
+    }
+
     public void sendMessage(String destination, String content) {
         WebSocketStompClient stompClient = new WebSocketStompClient(new StandardWebSocketClient());
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());

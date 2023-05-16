@@ -3,6 +3,8 @@ package com.example.demo;
 
 import com.example.demo.RMIClient.Hello_S_I;
 import com.example.demo.RMIClient.Hello_C_I;
+import com.example.demo.WebSocket.Message;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
@@ -55,6 +57,16 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
         return !username.contains("|") && !username.contains(";") && !username.contains("\\n") && !username.contains(" ");
 
     }
+
+    @Scheduled(fixedRate = 5000)
+    private void send_information() throws Exception {
+
+        String a = "type | information;";
+        h.print_on_server(a , (Hello_C_I) c);
+
+    }
+
+
 
     @GetMapping("/")
     public String redirect() throws RemoteException, NotBoundException {
@@ -237,8 +249,7 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
 
     @GetMapping("/informacoes_gerais")
     public String informacoes() throws Exception {
-        String msg = "type | information;";
-        h.print_on_server(msg,(Hello_C_I) c);
+
         return "websocket1";
     }
 
@@ -259,8 +270,6 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
     public void print_on_client(String s) throws Exception {
 
         String[] msg_received = s.split(" ", 0);
-        System.out.println(s);
-
 
         if (msg_received[3].equals("search") || msg_received[3].equals("search1")) {
 
@@ -290,6 +299,8 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
 
         }else if(msg_received[3].equals("register")){
             success = msg_received[5].equals("sucess;");
+        }else if(msg_received[3].equals("information")){
+            System.out.println(s);
         }
     }
 
