@@ -3,6 +3,9 @@ package com.example.demo;
 
 import com.example.demo.RMIClient.Hello_S_I;
 import com.example.demo.RMIClient.Hello_C_I;
+import com.example.demo.RMIClient.Interface;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
@@ -13,22 +16,19 @@ import com.example.demo.Forms.Url;
 import com.example.demo.Forms.Termos;
 
 import java.rmi.*;
+import java.rmi.registry.Registry;
+import java.rmi.server.*;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
 @Controller
-public class webpage extends UnicastRemoteObject implements Hello_C_I {
+public class webpage implements Hello_C_I {
     private Hello_S_I h;
     private webpage c;
-    public List<String> searchs = new ArrayList<>();
 
-
-    public webpage() throws RemoteException {
-        super();
+    public webpage() {
         try {
             h = (Hello_S_I) LocateRegistry.getRegistry(7000).lookup("XPTO");
             c = this;
@@ -165,20 +165,18 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
     @PostMapping("/termos_pesquisados")
     public String termos_pesquisados(@ModelAttribute Termos termos, Model model) throws Exception {
 
+        System.out.println(termos);
+
         for (int i = 0; i < termos.getTermos().toArray().length; i++) {
             if (!verify_value(termos.getTermos().get(i))) {
                 model.addAttribute("errorMessage", "Termo invalido!\n\"Nao pode conter os carateres '|' , ';' , ' ' e '\\\\n'\\n\"");
                 return "pesquisa_termos";
             }
         }
-
         String aux = String.join(",", termos.getTermos());
         String msg = "type | search; "+ termos.getChecked()+" | " + aux;
         h.print_on_server(msg,(Hello_C_I) c);
-
-        termos.setResults(searchs);
-
-        return "resultados_termos";
+        return "home";
     }
 
     @GetMapping("/pesquisa_url")
@@ -206,9 +204,6 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
         } else {
             String msg = "type | search1; pesquisa | " + url.getUrl();
             h.print_on_server(msg,(Hello_C_I) c);
-
-            url.setResults(searchs);
-
             return "resultados";
         }
     }
@@ -227,34 +222,29 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
         }
     }
 
+    @PostMapping("/resultados")
+    public String resultados(@ModelAttribute Url url) {
+
+        List<String> results = new ArrayList<>();
+
+        for (int i = 0; i < 11; i++) {
+            results.add(Integer.toString(i));
+        }
+        //mandar url para o server
+        url.setResults(results);
+        //receber mensagem
+
+        return "resultados";
+    }
+
+    @GetMapping("/informacoes_gerais")
+    public String informacoes(){
+        return "websocket1";
+    }
+
+    @Override
     public void print_on_client(String s) throws Exception {
 
-        String[] msg_received = s.split(" ", 0);
-        System.out.println(s);
-
-
-        if (msg_received[3].equals("search") || msg_received[3].equals("search1")) {
-
-            searchs.clear();
-            String search_results = msg_received[6];
-            String[] separate_results = search_results.split(";");
-
-            System.out.println(Arrays.toString(separate_results));
-
-            if (separate_results[0].equals("nada")) {
-
-
-                searchs.add("Nenhum resultado foi encontrado...");
-
-                System.out.println(searchs);
-
-            }else{
-                searchs.addAll(Arrays.asList(separate_results));
-
-            }
-
-
-        }
     }
 
     @Override

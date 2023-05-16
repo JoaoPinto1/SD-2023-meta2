@@ -187,7 +187,6 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
                     }
 
                     try {
-                        System.out.println("aqui");
                         c.print_on_client("type | status; search1 | result; " + resultados);
                     } catch (java.rmi.RemoteException e) {
                         System.out.println("Erro a enviar ao cliente.");
