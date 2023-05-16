@@ -237,6 +237,11 @@ public class webpage implements Hello_C_I {
         return "resultados";
     }
 
+    @GetMapping("/informacoes_gerais")
+    public String informacoes(){
+        return "websocket1";
+    }
+
     @Override
     public void print_on_client(String s) throws Exception {
 
