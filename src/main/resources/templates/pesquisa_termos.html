@@ -16,11 +16,12 @@
             formHTML += "<label for='input" + i + "'>Termo " + (i + 1) + ":</label><br>";
             formHTML += "<input type='text' th:field='*{termos[" + i + "]}' required id='input" + i + "' name='termos[" + i + "]'><br>";
         }
-        formHTML += "<div> Indexar Urls <input type='checkbox' id='indexUrlsCheckbox' name='checked' value='true'> </div>";
-        formHTML += "<input type='submit' value='Submit'>";
+        formHTML += "<br> <div> Indexar Urls <input type='checkbox' id='indexUrlsCheckbox' name='checked' value='true'> </div>";
+        formHTML += "<br> <input type='submit' value='Submit'>";
         document.write(formHTML);
     </script>
-
+    <br>
+    <a href="home">Voltar para o menu principal</a>
     <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">

@@ -5,16 +5,22 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     </head>
+    <h1>Registo:</h1>
     <div>
         <label>Username </label>
+        <br>
         <input type="text" th:field="*{username}" required>
     </div>
     <div>
         <label>Password</label>
+        <br>
         <input type="password" th:field="*{password}" required>
 
     </div>
-    <button type="submit">Login</button>
+    <br>
+    <button type="submit">Registar</button>
+    <br>
+    <a href="home">Voltar para o menu principal</a>
 
     <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
          aria-hidden="true">

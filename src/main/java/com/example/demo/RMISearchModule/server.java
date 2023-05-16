@@ -104,7 +104,7 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
                         String password = received_string[8];
                         System.out.println("username: " + username + "\npassword: " + password + "\n");
                     } else {
-                        a = "type | status; register | failed; msg | Username ou password errados.";
+                        a = "type | status; logged | failed; msg | Username ou password errados.";
                         try {
                             c.print_on_client(a);
                         } catch (java.rmi.RemoteException e) {

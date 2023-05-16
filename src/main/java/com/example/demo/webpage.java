@@ -25,6 +25,8 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
     private Hello_S_I h;
     private webpage c;
     public List<String> searchs = new ArrayList<>();
+    public boolean logged_on = false;
+    public boolean success = false;
 
 
     public webpage() throws RemoteException {
@@ -39,7 +41,6 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
         }
     }
 
-    boolean logged_on = false;
 
     /* private ProgramInfoSender programInfoSender;
 
@@ -81,6 +82,7 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
 
         // Set logout message in the session
         if (logged_on) {
+
             model.addAttribute("errorMessage", "Logout realizado com sucesso!");
             logged_on = false;
             String msg = "type | logout;";
@@ -105,7 +107,14 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
             return "login";
         } else {
             h.print_on_server(msg, (Hello_C_I) c);
-            return "redirect:/home";
+
+            if(!logged_on){
+                model.addAttribute("errorMessage", "Username ou password errada!");
+                return "login";
+            }
+
+            model.addAttribute("errorMessage", "Login realizado com sucesso!");
+            return "home";
         }
 
     }
@@ -123,13 +132,21 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
 
 
         if (!verify_value(user.getUsername()) || !verify_value(user.getPassword())) {
-            model.addAttribute("errorMessage", "Username ou password errada!");
+            model.addAttribute("errorMessage", "Username ou password invalidos!\n\"Nao pode conter os carateres '|' , ';' , ' ' e '\\\\n'\\n\"");
 
             return "register";
         } else {
             String msg = "type | regist; username | " + user.getUsername() +"; password | "+ user.getPassword();
             h.print_on_server(msg,(Hello_C_I) c);
-            return "redirect:/home";
+
+            if(!success){
+                model.addAttribute("errorMessage", "Username ja se encontra utilizado...");
+
+                return "register";
+            }
+
+            model.addAttribute("errorMessage", "Registo realizado com sucesso!");
+            return "home";
         }
 
     }
@@ -146,7 +163,7 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
     @PostMapping("/check_stories")
     public String check_stories(@ModelAttribute User user) throws Exception {
 
-        String msg = "type | search2; username | " +user.getUsername();
+        String msg = "type | search2; username | " + user.getUsername();
         h.print_on_server(msg,(Hello_C_I) c);
         return "redirect:/home";
     }
@@ -261,6 +278,13 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
             }
 
 
+        }else if(msg_received[3].equals("logged")) {
+
+            //fica com o valor do login, true se sucedeu e false se falhou
+            logged_on = msg_received[5].equals("on;");
+
+        }else if(msg_received[3].equals("register")){
+            success = msg_received[5].equals("sucess;");
         }
     }
 
