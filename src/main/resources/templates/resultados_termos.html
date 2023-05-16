@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Results Page</title>
+</head>
+<body>
+<h1>Results:</h1>
+<div>
+    <ul>
+        <li th:each="value, iterStat : ${#numbers.sequence(0, 9)}"
+            th:if="${value < termos.results.size()}"
+            th:text="${termos.results[value]}"></li>
+    </ul>
+</div>
+</body>
+</html>

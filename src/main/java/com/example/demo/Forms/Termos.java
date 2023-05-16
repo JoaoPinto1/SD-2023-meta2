@@ -7,11 +7,21 @@ public class Termos {
 
     private List<String> termos;
     private boolean checked;
+    public List<String> results;
 
+
+    public List<String> getResults() {
+        return results;
+    }
+
+    public void setResults(List<String> results) {
+        this.results = results;
+    }
 
     public Termos(){
         termos = new ArrayList<>();
         checked = false;
+        results = new ArrayList<>();
     }
 
     public Termos(List<String> termos , Boolean check) {
