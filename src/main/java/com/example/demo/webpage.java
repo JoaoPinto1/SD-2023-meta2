@@ -213,6 +213,11 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
         }
     }
 
+    @GetMapping("/informacoes_gerais")
+    public String informacoes(){
+        return "websocket1";
+    }
+
 
     @PostMapping("/check_indexacao")
     public String check_indexacao(@ModelAttribute Url url, Model model) throws Exception {
