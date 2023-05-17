@@ -214,14 +214,19 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
             String search = "https://hacker-news.firebaseio.com/v0/user/"+utilizador+".json";
             RestTemplate restTemplate = new RestTemplate();
             HackerNewsUser user = restTemplate.getForObject(search, HackerNewsUser.class);
-            List<Integer> articles = user.submitted();
-            QueueInterface server = (QueueInterface) LocateRegistry.getRegistry(6000).lookup("Queue");
-            for(Integer id:articles){
-                search = "https://hacker-news.firebaseio.com/v0/item/"+id+".json";
-                HackerNewsItemRecord item = restTemplate.getForObject(search,HackerNewsItemRecord.class);
-                assert item != null;
-                URLObject url = new URLObject(item.url());
-                server.addToQueue(url);
+            if(user == null){
+                System.out.println("Utilizador nao existe");
+            }
+            else {
+                List<Integer> articles = user.submitted();
+                QueueInterface server = (QueueInterface) LocateRegistry.getRegistry(6000).lookup("Queue");
+                for (Integer id : articles) {
+                    search = "https://hacker-news.firebaseio.com/v0/item/" + id + ".json";
+                    HackerNewsItemRecord item = restTemplate.getForObject(search, HackerNewsItemRecord.class);
+                    assert item != null;
+                    URLObject url = new URLObject(item.url());
+                    server.addToQueue(url);
+                }
             }
         }
 
