@@ -1,5 +1,7 @@
 package com.example.demo.StorageBarrel;
 
+import org.postgresql.util.PSQLException;
+
 import java.io.*;
 import java.net.DatagramPacket;
 import java.sql.*;
@@ -36,7 +38,7 @@ public class Storage_Barrels_Multicast extends Thread implements Runnable {
                     }
                 }
             }
-        } catch (IOException | SQLException e) {
+        } catch (IOException | PSQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,6 +4,10 @@ package com.example.demo;
 import com.example.demo.RMIClient.Hello_S_I;
 import com.example.demo.RMIClient.Hello_C_I;
 import com.example.demo.WebSocket.Message;
+import com.example.demo.WebSocket.ProgramStatus;
+import com.example.demo.WebSocket.WebSocketClient;
+import jakarta.websocket.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.example.demo.Forms.Url;
 import com.example.demo.Forms.Termos;
 
+import java.net.URI;
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
@@ -30,6 +35,9 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
     public boolean logged_on = false;
     public boolean success = false;
 
+    @Autowired
+    private WebSocketClient webSocketClient;
+
 
     public webpage() throws RemoteException {
         super();
@@ -37,6 +45,8 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
             h = (Hello_S_I) LocateRegistry.getRegistry(7000).lookup("XPTO");
             c = this;
             h.subscribe("cliente", (Hello_C_I) c);
+
+
         } catch (Exception e) {
             System.err.println("Error connecting to search module: " + e.getMessage());
             e.printStackTrace();
@@ -51,7 +61,6 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
          this.programInfoSender = programInfoSender;
      }
     */
-
 
     private static Boolean verify_value(String username) {
         return !username.contains("|") && !username.contains(";") && !username.contains("\\n") && !username.contains(" ");
@@ -300,7 +309,24 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
         }else if(msg_received[3].equals("register")){
             success = msg_received[5].equals("sucess;");
         }else if(msg_received[3].equals("information")){
-            System.out.println(s);
+            String my_new_str;
+            my_new_str = msg_received[5].replace("{", "");
+            my_new_str = my_new_str.replace("}", "");
+            msg_received[5] = my_new_str.replace(",", "");
+
+            my_new_str = msg_received[6].replace("{", "");
+            my_new_str = my_new_str.replace("}", "");
+            my_new_str = my_new_str.replace(",", "");
+            msg_received[6] = my_new_str.replace(";", "");
+
+            msg_received[7] = msg_received[7].replace(";", "");
+            String aux = "";
+            for (int i = 7; i < msg_received.length; i++){
+                my_new_str = msg_received[i].replace("{", "");
+                my_new_str = my_new_str.replace("}", "");
+                aux = aux.concat(my_new_str + "<br>");
+            }
+            webSocketClient.sendMessage("/topic/messages",new ProgramStatus(msg_received[5],msg_received[6],aux));
         }
     }
 

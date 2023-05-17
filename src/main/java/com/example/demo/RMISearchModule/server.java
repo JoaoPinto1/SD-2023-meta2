@@ -16,8 +16,6 @@ import com.example.demo.RMIClient.Hello_S_I;
 import com.example.demo.URLQueue.QueueInterface;
 import com.example.demo.URLQueue.URLObject;
 
-import com.example.demo.WebSocket.Message;
-import com.example.demo.WebSocket.ProgramStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -44,7 +42,7 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
     public server h;
     public final List<String> results;
     public final List<String> searchs;
-    public Map<String, String> top_searchs = new HashMap<>();
+    public Map<String, String> top_searchs;
     public ArrayList<Hello_C_I> storage_barrels;
 
     public ArrayList<Hello_C_I> downloaders;
@@ -280,31 +278,16 @@ public class server extends UnicastRemoteObject implements Hello_S_I, Runnable, 
                 throw new RuntimeException(e);
             }
             synchronized (top_searchs) {
-                String a = "type | status; information | " + storage_barrels.size() + "," + downloaders.size() + "," + top_searchs.toString();
+                String a = "type | status; information | " + storage_barrels.size() + " ," + downloaders.size() + " ," + top_searchs.toString();
                 try {
+                    System.out.println(top_searchs.toString());
                     c.print_on_client(a);
                 } catch (java.rmi.RemoteException e) {
                     System.out.println("Erro a enviar ao cliente.");
                 }
             }
         }
-
     }
-
-    }
-
-    public void sendMessage(String destination, String content) {
-        WebSocketStompClient stompClient = new WebSocketStompClient(new StandardWebSocketClient());
-        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-
-        StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
-            @Override
-            public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-                session.send(destination, content);
-            }
-        };
-
-        stompClient.connect("ws://localhost:8080/my-websocket", sessionHandler);
     }
 
 

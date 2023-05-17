@@ -19,7 +19,8 @@ function connect() {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/messages', function (message) {
-            showMessage(JSON.parse(message.body).content);
+            var parsedMessage = JSON.parse(message.body)
+            showMessage(parsedMessage.barrels,parsedMessage.downloaders,parsedMessage.searches);
         });
     });
 }
@@ -37,8 +38,9 @@ function sendMessage() {
     stompClient.send("/app/message", {}, JSON.stringify({'content': $("#message").val()}));
 }
 
-function showMessage(message) {
-    $("#messages").append("<tr><td>" + message + "</td></tr>");
+function showMessage(barrels,downloaders,searches) {
+    $("#messages").empty()
+    $("#messages").append("<p><b>Downloaders:</b></p>" + "<tr><td>" + downloaders + "</td></tr><p><b>Barrels:</b></p><tr><td>" + barrels + "</td></tr><p><b>Top searches:</b></p><tr><td>"+searches+"</td></tr>");
 }
 
 $(function () {
