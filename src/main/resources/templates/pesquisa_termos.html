@@ -10,15 +10,20 @@
 <h1>Pesquisa por termos</h1>
 <form th:action="@{/termos_pesquisados}" th:object="${termos}" method="post">
     <script>
-        var numInputs = prompt("Quantos termos deseja pesquisar?");
-        var formHTML = "";
-        for (var i = 0; i < numInputs; i++) {
-            formHTML += "<label for='input" + i + "'>Termo " + (i + 1) + ":</label><br>";
-            formHTML += "<input type='text' th:field='*{termos[" + i + "]}' required id='input" + i + "' name='termos[" + i + "]'><br>";
+        var numInputs = 0;
+        while(numInputs <= 0) {
+            numInputs = prompt("Quantos termos deseja pesquisar?");
         }
-        formHTML += "<br> <div> Indexar Urls <input type='checkbox' id='indexUrlsCheckbox' name='checked' value='true'> </div>";
-        formHTML += "<br> <input type='submit' value='Submit'>";
-        document.write(formHTML);
+        var formHTML = "";
+        if(!isNaN(numInputs)) {
+            for (var i = 0; i < numInputs; i++) {
+                formHTML += "<label for='input" + i + "'>Termo " + (i + 1) + ":</label><br>";
+                formHTML += "<input type='text' th:field='*{termos[" + i + "]}' required id='input" + i + "' name='termos[" + i + "]'><br>";
+            }
+            formHTML += "<br> <div> Indexar Urls <input type='checkbox' id='indexUrlsCheckbox' name='checked' value='true'> </div>";
+            formHTML += "<br> <input type='submit' value='Submit'>";
+            document.write(formHTML);
+        }
     </script>
     <br>
     <a href="home">Voltar para o menu principal</a>
