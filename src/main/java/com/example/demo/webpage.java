@@ -17,6 +17,7 @@ import com.example.demo.Forms.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.example.demo.Forms.Url;
 import com.example.demo.Forms.Termos;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.net.URI;
 import java.rmi.*;
@@ -71,10 +72,9 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
     private void send_information() throws Exception {
 
         String a = "type | information;";
-        h.print_on_server(a , (Hello_C_I) c);
+        h.print_on_server(a, (Hello_C_I) c);
 
     }
-
 
 
     @GetMapping("/")
@@ -107,7 +107,7 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
             model.addAttribute("errorMessage", "Logout realizado com sucesso!");
             logged_on = false;
             String msg = "type | logout;";
-            h.print_on_server(msg,(Hello_C_I) c);
+            h.print_on_server(msg, (Hello_C_I) c);
 
         } else {
             model.addAttribute("errorMessage", "Necessita ter login realizado para poder fazer logout!");
@@ -129,7 +129,7 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
         } else {
             h.print_on_server(msg, (Hello_C_I) c);
 
-            if(!logged_on){
+            if (!logged_on) {
                 model.addAttribute("errorMessage", "Username ou password errada!");
                 return "login";
             }
@@ -157,10 +157,10 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
 
             return "register";
         } else {
-            String msg = "type | regist; username | " + user.getUsername() +"; password | "+ user.getPassword();
-            h.print_on_server(msg,(Hello_C_I) c);
+            String msg = "type | regist; username | " + user.getUsername() + "; password | " + user.getPassword();
+            h.print_on_server(msg, (Hello_C_I) c);
 
-            if(!success){
+            if (!success) {
                 model.addAttribute("errorMessage", "Username ja se encontra utilizado...");
 
                 return "register";
@@ -174,9 +174,9 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
 
 
     @GetMapping("/indexar_stories")
-    public String indexar_stories(Model model){
+    public String indexar_stories(Model model) {
 
-        model.addAttribute("user" , new User());
+        model.addAttribute("user", new User());
 
         return "index_user_stories";
     }
@@ -185,7 +185,7 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
     public String check_stories(@ModelAttribute User user) throws Exception {
 
         String msg = "type | search2; username | " + user.getUsername();
-        h.print_on_server(msg,(Hello_C_I) c);
+        h.print_on_server(msg, (Hello_C_I) c);
         return "redirect:/home";
     }
 
@@ -211,10 +211,13 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
         }
 
         String aux = String.join(",", termos.getTermos());
-        String msg = "type | search; "+ termos.getChecked()+" | " + aux;
-        h.print_on_server(msg,(Hello_C_I) c);
+        String msg = "type | search; " + termos.getChecked() + " | " + aux;
+        h.print_on_server(msg, (Hello_C_I) c);
 
         termos.setResults(searchs);
+
+        List<String> array = new ArrayList<>();
+
 
         return "resultados_termos";
     }
@@ -223,7 +226,7 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
     public String pesquisa_url(Model model) {
         model.addAttribute("url", new Url());
 
-        if(!logged_on){
+        if (!logged_on) {
             model.addAttribute("errorMessage", "Necessita ter login realizado para poder realizar esta acao!");
             return "home";
         }
@@ -241,14 +244,22 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
     }
 
     @PostMapping("/check_pesquisa")
-    public String check_pesquisa(@ModelAttribute Url url, Model model) throws Exception {
+    public String check_pesquisa(@ModelAttribute Url url, Model model, @RequestParam(defaultValue = "0") Integer page) throws Exception {
+
+        int startIndex = page * 10;
+        // Calculate the end index
+        int endIndex = Math.min(startIndex + 10, url.results.size());
+        model.addAttribute("startIndex", startIndex);
+        model.addAttribute("endIndex", endIndex);
+        model.addAttribute("currentPage", page);
+
 
         if (!verify_value(url.getUrl())) {
             model.addAttribute("errorMessage", "Url invalido!\n\"Nao pode conter os carateres '|' , ';' , ' ' e '\\\\n'\\n\"");
             return "pesquisa_url";
         } else {
             String msg = "type | search1; pesquisa | " + url.getUrl();
-            h.print_on_server(msg,(Hello_C_I) c);
+            h.print_on_server(msg, (Hello_C_I) c);
 
             url.setResults(searchs);
 
@@ -263,6 +274,26 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
     }
 
 
+    @PostMapping("/resultados")
+    public String resultados(@ModelAttribute Url url, @RequestParam(defaultValue = "0") int page, Model model) {
+
+        // Assuming 10 results per page
+        int resultsPerPage = 10;
+        // Calculate the start index
+        int startIndex = page * resultsPerPage;
+        // Calculate the end index
+        int endIndex = Math.min(startIndex + resultsPerPage, url.results.size());
+
+        // Pass the startIndex and endIndex to the Thymeleaf template
+        model.addAttribute("startIndex", startIndex);
+        model.addAttribute("endIndex", endIndex);
+        model.addAttribute("currentPage", page);
+
+
+        return "resultados";
+    }
+
+
     @PostMapping("/check_indexacao")
     public String check_indexacao(@ModelAttribute Url url, Model model) throws Exception {
 
@@ -270,8 +301,8 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
             model.addAttribute("errorMessage", "Url invalido!\n\"Nao pode conter os carateres '|' , ';' , ' ' e '\\\\n'\\n\"");
             return "indexar";
         } else {
-            String msg = "type | url; url | "+url.getUrl();
-            h.print_on_server(msg,(Hello_C_I) c);
+            String msg = "type | url; url | " + url.getUrl();
+            h.print_on_server(msg, (Hello_C_I) c);
             return "redirect:/home";
         }
     }
@@ -295,20 +326,20 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
 
                 System.out.println(searchs);
 
-            }else{
+            } else {
                 searchs.addAll(Arrays.asList(separate_results));
 
             }
 
 
-        }else if(msg_received[3].equals("logged")) {
+        } else if (msg_received[3].equals("logged")) {
 
             //fica com o valor do login, true se sucedeu e false se falhou
             logged_on = msg_received[5].equals("on;");
 
-        }else if(msg_received[3].equals("register")){
+        } else if (msg_received[3].equals("register")) {
             success = msg_received[5].equals("sucess;");
-        }else if(msg_received[3].equals("information")){
+        } else if (msg_received[3].equals("information")) {
             String my_new_str;
             my_new_str = msg_received[5].replace("{", "");
             my_new_str = my_new_str.replace("}", "");
