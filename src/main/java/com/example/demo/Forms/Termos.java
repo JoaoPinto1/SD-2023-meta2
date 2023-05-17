@@ -40,13 +40,7 @@ public class Termos {
         checked = check;
     }
 
-    @Override
-    public String toString() {
-        return "termos{" +
-                "Termos=" + termos +
-                ", checked=" + checked +
-                '}';
-    }
+
 
     public List<String> getTermos() {
         return termos;

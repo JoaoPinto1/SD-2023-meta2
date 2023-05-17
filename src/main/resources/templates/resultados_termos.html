@@ -2,67 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Results Page</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            var startIndex = 0;
-            var endIndex = 9;
-            var results = [[${termos.results}]]; // Assuming url.results is a list of results
-            function updateResults() {
-                $("ul").empty(); // Clear previous results
-
-                for (var i = startIndex; i <= endIndex; i++) {
-                    if (i >= results.length) {
-                        break;
-                    }
-                    $("ul").append("<li>" + results[i] + "</li>");
-                }
-            }
-
-            function updateButtonStates() {
-                if (startIndex === 0) {
-                    $("#leftButton").prop("disabled", true);
-                } else {
-                    $("#leftButton").prop("disabled", false);
-                }
-
-                if (endIndex >= results.length - 1) {
-                    $("#rightButton").prop("disabled", true);
-                } else {
-                    $("#rightButton").prop("disabled", false);
-                }
-            }
-
-            $("#leftButton").click(function() {
-                if (startIndex > 0) {
-                    startIndex -= 10;
-                    endIndex -= 10;
-                    updateResults();
-                    updateButtonStates();
-                }
-            });
-
-            $("#rightButton").click(function() {
-                if (endIndex < results.length - 1) {
-                    startIndex += 10;
-                    endIndex += 10;
-                    updateResults();
-                    updateButtonStates();
-                }
-            });
-
-            updateResults();
-            updateButtonStates();
-        });
-    </script>
 </head>
 <body>
 <h1>Results:</h1>
 <div>
-    <ul></ul>
+    <ul>
+        <li th:each="value, iterStat : ${#numbers.sequence(0, termos.results.size() - 1)}"
+            th:text="${termos.results[value]}"></li>
+    </ul>
 </div>
-<button id="leftButton">Left</button>
-<button id="rightButton">Right</button>
 <a href="home">Voltar para o menu principal</a>
 </body>
 </html>
