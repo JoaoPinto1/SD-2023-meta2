@@ -3,10 +3,8 @@ package com.example.demo;
 
 import com.example.demo.RMIClient.Hello_S_I;
 import com.example.demo.RMIClient.Hello_C_I;
-import com.example.demo.WebSocket.Message;
 import com.example.demo.WebSocket.ProgramStatus;
 import com.example.demo.WebSocket.WebSocketClient;
-import jakarta.websocket.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -19,7 +17,10 @@ import com.example.demo.Forms.Url;
 import com.example.demo.Forms.Termos;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.net.URI;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
@@ -43,11 +44,15 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
     public webpage() throws RemoteException {
         super();
         try {
-            h = (Hello_S_I) LocateRegistry.getRegistry(7000).lookup("XPTO");
+            File file = new File("ipaddress.txt");
+            FileInputStream fileInputStream = new FileInputStream(file);
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String ip = bufferedReader.readLine();
+            bufferedReader.close();
+            h = (Hello_S_I) LocateRegistry.getRegistry(ip,7000).lookup("XPTO");
             c = this;
             h.subscribe("cliente", (Hello_C_I) c);
-
-
         } catch (Exception e) {
             System.err.println("Error connecting to search module: " + e.getMessage());
             e.printStackTrace();
@@ -55,7 +60,7 @@ public class webpage extends UnicastRemoteObject implements Hello_C_I {
     }
 
 
-    /* private ProgramInfoSender programInfoSender;
+    /*private ProgramInfoSender programInfoSender;
 
      @Autowired
      public Webpage(ProgramInfoSender programInfoSender) {

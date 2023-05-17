@@ -1,6 +1,7 @@
 package com.example.demo.RMISearchModule;
 
 import java.io.Serializable;
+import java.net.InetAddress;
 import java.rmi.*;
 import java.rmi.server.*;
 import java.rmi.registry.LocateRegistry;
